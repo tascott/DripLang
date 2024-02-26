@@ -26,6 +26,9 @@ function translate(paragraph) {
 
     $.getJSON(url,function(data) {
         console.log(data[0][0][0]);
+        // TODO: insert the translation into the paragraph after the original text, in brackets
+        // TODO: add a class to the translated text
+        // TODO: show some stylised link between the original and the translated text
         paragraph.textContent = paragraph.textContent + ' (' + data[0][0][0] + ')';
     });
 }
