@@ -69,3 +69,38 @@ function styleSpansAndAddListenters(p) {
     })
 
 }
+
+
+
+
+// Default behavior if the setting hasn't been set yet
+let featureEnabled = true;
+
+// Function to update feature behavior based on setting
+function updateFeatureBehavior(enabled) {
+    if(enabled) {
+        // Code to enable the feature
+        alert('enabled set!!')
+    } else {
+        // Code to disable or alter the feature
+        alert('disabled set!!')
+    }
+}
+
+// Check storage for the user's settings
+chrome.storage.sync.get('featureEnabled',function(data) {
+    if(data.featureEnabled !== undefined) {
+        featureEnabled = data.featureEnabled;
+        updateFeatureBehavior(featureEnabled);
+    }
+});
+
+
+chrome.storage.onChanged.addListener(function(changes,namespace) {
+    for(let [key,{oldValue,newValue}] of Object.entries(changes)) {
+        if(key === 'featureEnabled') {
+            console.log('Feature enabled setting changed, listened in index.js');
+            updateFeatureBehavior(newValue);
+        }
+    }
+});
