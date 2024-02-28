@@ -1,3 +1,5 @@
+let targetLanguage;
+
 function wrapTextNodesWithSpans(element) {
     // Iterate through all child nodes of the element, which will be a paragraph
     Array.from(element.childNodes).forEach((node) => {
@@ -29,16 +31,14 @@ function wrapTextNodesWithSpans(element) {
 }
 
 // Apply the function to your paragraph element
-console.log('wrapTextNodesWithSpans')
 document.querySelectorAll('p').forEach(p => {
     wrapTextNodesWithSpans(p);
 });
 
 
-
 function translate(span) {
     var sourceLang = 'en';
-    var targetLang = 'es';
+    var targetLang = targetLanguage || 'es';
     var sourceText = span.textContent;
     console.log('SPAN CONTENT:', span.textContent)
 
@@ -47,7 +47,6 @@ function translate(span) {
 
     $.getJSON(url,function(data) {
         console.log(data[0][0][0]);
-        // TODO: insert the translation into the span after the original text, in brackets
         // TODO: add a class to the translated text
         // TODO: show some stylised link between the original and the translated text
         span.textContent = span.textContent + ' (' + data[0][0][0] + ')';
@@ -74,33 +73,34 @@ function styleSpansAndAddListenters(p) {
 
 
 // Default behavior if the setting hasn't been set yet
-let featureEnabled = true;
 
 // Function to update feature behavior based on setting
-function updateFeatureBehavior(enabled) {
-    if(enabled) {
-        // Code to enable the feature
-        alert('enabled set!!')
+function updateLanguage(language) {
+    if(language) {
+        // think this runs straight away
+        console.log('language set?', language)
+        targetLanguage = language;
     } else {
-        // Code to disable or alter the feature
-        alert('disabled set!!')
+        targetLanguage = 'es';
+        console.log('language not set?', language)
     }
 }
 
 // Check storage for the user's settings
-chrome.storage.sync.get('featureEnabled',function(data) {
-    if(data.featureEnabled !== undefined) {
-        featureEnabled = data.featureEnabled;
-        updateFeatureBehavior(featureEnabled);
+chrome.storage.sync.get('language',function(data) {
+    if(data.language !== undefined) {
+        language = data.language;
+        console.log('update data.language',data.language)
+        updateLanguage(language);
     }
 });
 
 
 chrome.storage.onChanged.addListener(function(changes,namespace) {
     for(let [key,{oldValue,newValue}] of Object.entries(changes)) {
-        if(key === 'featureEnabled') {
-            console.log('Feature enabled setting changed, listened in index.js');
-            updateFeatureBehavior(newValue);
+        if(key === 'language') {
+            console.log('Languagesetting changed, listened in index.js', newValue);
+            updateLanguage(newValue);
         }
     }
 });
