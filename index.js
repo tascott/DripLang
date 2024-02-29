@@ -7,7 +7,7 @@ function splitElementsIntoSpans(element) {
     Array.from(element.childNodes).forEach((node) => {
         if(node.nodeType === Node.TEXT_NODE) {
             // This is a text node, apply regex and wrap parts in <span>
-            const parts = node.nodeValue.match(/[^,;:.]+[,;:.]?|\s+/g);
+            const parts = node.nodeValue.match(/[^,;:.]+[,;:.]?|\s+/g); //TODO: Add more punctuation + words
             if(parts) {
                 const spanWrapper = document.createDocumentFragment();
                 parts.forEach(part => {
@@ -39,10 +39,7 @@ function translate(span) {
     var url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
 
     $.getJSON(url,function(data) {
-        // TODO: add a class to the translated text
-        // TODO: show some stylised link between the original and the translated text
         span.textContent = span.textContent + ' (' + data[0][0][0] + ')';
-        //TODO add a class to the translated text span to stop it being able to be clicked and translated again
     });
 }
 
