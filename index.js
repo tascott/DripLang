@@ -1,13 +1,14 @@
 let targetLanguage;
-let color1 = 'rgba(0,0,0,0.5)';
-let color2 = 'rgba(255,255,255,0.3)';
+let color1 = 'rgba(0,0,0,0.03)';
+let color2 = 'rgba(255,255,255,0.2)';
+let translatedColor = 'rgba(255,216,184,0.7)';
 
 function splitElementsIntoSpans(element) {
     // Iterate through all child nodes of the element, which will be a paragraph
     Array.from(element.childNodes).forEach((node) => {
         if(node.nodeType === Node.TEXT_NODE) {
             // This is a text node, apply regex and wrap parts in <span>
-            const parts = node.nodeValue.match(/[^,;:.]+[,;:.]?|\s+/g); //TODO: Add more punctuation + words
+            const parts = node.nodeValue.match(/[^,;:.\\-]+[,;:.\\-]?|\s+/g); //TODO: Add more punctuation + words
             if(parts) {
                 const spanWrapper = document.createDocumentFragment();
                 parts.forEach(part => {
@@ -39,7 +40,12 @@ function translate(span) {
     var url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
 
     $.getJSON(url,function(data) {
-        span.textContent = span.textContent + ' (' + data[0][0][0] + ')';
+        const translation = data[0][0][0];
+        const translatedSpan = document.createElement('span');
+        translatedSpan.textContent = ' ' + '(' + translation + ')' + ' ';
+        translatedSpan.classList.add('new-span');
+        translatedSpan.style.backgroundColor = translatedColor;
+        span.insertAdjacentElement('afterend',translatedSpan);
     });
 }
 
@@ -47,8 +53,10 @@ function styleSpansAndAddListeners(textBlock) {
     const spans = textBlock.querySelectorAll('span')
     spans.forEach((span,i) => {
         span.style.backgroundColor = i % 2 === 0 ? color1 : color2;
-        span.classList.add('translated-span'); // to be traversed later
-        span.addEventListener('click',() => {
+        span.classList.add('translation-span'); // to be traversed later
+        span.addEventListener('click',(e) => {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
             translate(span);
         })
     })
@@ -85,7 +93,7 @@ asyncDataFromStorage().then(() => {
 });
 
 function updateColors() {
-    document.querySelectorAll('.translated-span').forEach((span,i) => {
+    document.querySelectorAll('.translation-span').forEach((span,i) => {
         span.style.backgroundColor = i % 2 === 0 ? color1 : color2;
     });
 }

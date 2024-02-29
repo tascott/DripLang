@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded',function() {
     chrome.storage.sync.get('color1',function(data) {
         if(data.color1 !== undefined) {
             color1.value = data.color1;
+        } else {
+            color1.value = 'rgba(0,0,0,0.03)';
         }
     });
 
@@ -22,6 +24,8 @@ document.addEventListener('DOMContentLoaded',function() {
     chrome.storage.sync.get('color2',function(data) {
         if(data.color2 !== undefined) {
             color2.value = data.color2;
+        } else {
+            color2.value = 'rgba(255,255,255,0.2)';
         }
     });
 
