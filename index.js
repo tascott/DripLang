@@ -1,6 +1,7 @@
+let enabled = true;
 let targetLanguage;
-let color1 = 'rgba(0,0,0,0.03)';
-let color2 = 'rgba(255,255,255,0.2)';
+let color1 = '#f7f7f7';
+let color2 = '#fff9f0';
 let translatedColor = 'rgba(255,216,184,0.7)';
 
 function splitElementsIntoSpans(element) {
@@ -17,7 +18,6 @@ function splitElementsIntoSpans(element) {
                         span.textContent = part;
                         spanWrapper.appendChild(span);
                     } else {
-                        // Preserve whitespace
                         spanWrapper.appendChild(document.createTextNode(part));
                     }
                 });
@@ -31,7 +31,6 @@ function splitElementsIntoSpans(element) {
     });
     styleSpansAndAddListeners(element);
 }
-
 
 function translate(span) {
     var sourceLang = 'en';

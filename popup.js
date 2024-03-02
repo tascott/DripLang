@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded',function() {
     const languageSelector = document.getElementById('language-select');
     const color1 = document.getElementById('color1');
     const color2 = document.getElementById('color2');
+    const onCheckbox = document.getElementById('on');
 
     // Load saved settings and update the languageSelector state
     chrome.storage.sync.get('language',function(data) {
@@ -29,6 +30,15 @@ document.addEventListener('DOMContentLoaded',function() {
         }
     });
 
+    // Load saved settings and update the color2 state
+    chrome.storage.sync.get('on',function(data) {
+        if(data.on !== undefined) {
+            on.value = true;
+        } else {
+            on.value = false;
+        }
+    });
+
     // Save settings when the languageSelector is changed
     languageSelector.addEventListener('change',function() {
         const language = languageSelector.value;
@@ -45,5 +55,12 @@ document.addEventListener('DOMContentLoaded',function() {
     color2.addEventListener('change',function() {
         const color = color2.value;
         chrome.storage.sync.set({color2: color});
+    });
+
+    // Turn on or off the extension
+    onCheckbox.addEventListener('change',function() {
+        const onValue = onCheckbox.checked;
+        console.log(onValue,'on');
+        chrome.storage.sync.set({on: onValue});
     });
 });
