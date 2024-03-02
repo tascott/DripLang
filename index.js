@@ -70,6 +70,23 @@ function updateLanguage(language) {
     }
 }
 
+// Function to visually disable the extension
+function toggleOnOff(value) {
+    if(value) {
+        enabled = true;
+        document.querySelectorAll('.translation-span').forEach(span => {
+            span.classList.remove('translation-span');
+            span.classList.add('off-span');
+        });
+    } else {
+        enabled = false;
+        document.querySelectorAll('.translation-span').forEach(span => {
+            span.classList.remove('off-span');
+            span.classList.add('translation-span');
+        });
+    }
+}
+
 // Function that waits for storage to return a color1 and color2 value
 function asyncDataFromStorage() {
     return new Promise((resolve,reject) => {
@@ -107,21 +124,17 @@ chrome.storage.sync.get('language',function(data) {
 
 chrome.storage.onChanged.addListener(function(changes,namespace) {
     for(let [key,{oldValue,newValue}] of Object.entries(changes)) {
-        if(key === 'language') {
+        if (key === 'language') {
             updateLanguage(newValue);
-        }
-    }
-});
-
-chrome.storage.onChanged.addListener(function(changes,namespace) {
-    for(let [key,{oldValue,newValue}] of Object.entries(changes)) {
-        if(key === 'color1') {
+        } else if (key === 'color1') {
             color1 = newValue;
             updateColors();
-        }
-        if(key === 'color2') {
+        } else  if (key === 'color2') {
             color2 = newValue;
             updateColors();
-        }
+        } else if (key === 'on') {
+            enabled = newValue;
+            toggleOnOff(newValue);
+        } else { console.log('No key found') }
     }
 });
