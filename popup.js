@@ -30,12 +30,15 @@ document.addEventListener('DOMContentLoaded',function() {
         }
     });
 
-    // Load saved settings and update the color2 state
+    // Load saved settings and update the onOff state
     chrome.storage.sync.get('on',function(data) {
+        console.log('onOff',data.on)
         if(data.on !== undefined) {
             on.value = true;
+            onCheckbox.checked = data.on;
         } else {
             on.value = false;
+            onCheckbox.checked = false;
         }
     });
 
@@ -60,7 +63,6 @@ document.addEventListener('DOMContentLoaded',function() {
     // Turn on or off the extension
     onCheckbox.addEventListener('change',function() {
         const onValue = onCheckbox.checked;
-        console.log(onValue,'on');
         chrome.storage.sync.set({on: onValue});
     });
 });

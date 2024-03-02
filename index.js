@@ -1,11 +1,12 @@
 let enabled = true;
+let offColor= 'rgba(0,0,0,0.0)';
 let targetLanguage;
 let color1 = '#f7f7f7';
 let color2 = '#fff9f0';
 let translatedColor = 'rgba(255,216,184,0.7)';
 
 function splitElementsIntoSpans(element) {
-    // Iterate through all child nodes of the element, which will be a paragraph
+    // Iterate through all child nodes of the element
     Array.from(element.childNodes).forEach((node) => {
         if(node.nodeType === Node.TEXT_NODE) {
             // This is a text node, apply regex and wrap parts in <span>
@@ -51,7 +52,12 @@ function translate(span) {
 function styleSpansAndAddListeners(textBlock) {
     const spans = textBlock.querySelectorAll('span')
     spans.forEach((span,i) => {
-        span.style.backgroundColor = i % 2 === 0 ? color1 : color2;
+        if(enabled){
+            span.style.backgroundColor = i % 2 === 0 ? color1 : color2;
+        } else {
+            span.style.backgroundColor = offColor;
+        }
+
         span.classList.add('translation-span'); // to be traversed later
         span.addEventListener('click',(e) => {
             e.stopPropagation();
@@ -71,31 +77,28 @@ function updateLanguage(language) {
 }
 
 // Function to visually disable the extension
-function toggleOnOff(value) {
-    if(value) {
+function toggleOnOff(isOn) {
+    if(isOn) {
         enabled = true;
-        document.querySelectorAll('.translation-span').forEach(span => {
-            span.classList.remove('translation-span');
-            span.classList.add('off-span');
-        });
+        updateColors();
     } else {
         enabled = false;
-        document.querySelectorAll('.translation-span').forEach(span => {
-            span.classList.remove('off-span');
-            span.classList.add('translation-span');
-        });
+        updateColors(true);
     }
 }
 
 // Function that waits for storage to return a color1 and color2 value
 function asyncDataFromStorage() {
     return new Promise((resolve,reject) => {
-        chrome.storage.sync.get(['color1','color2'],function(data) {
+        chrome.storage.sync.get(['color1','color2', 'on'],function(data) {
             if(data.color1 !== undefined) {
                 color1 = data.color1;
             }
             if(data.color2 !== undefined) {
                 color2 = data.color2;
+            }
+            if(data.on !== undefined) {
+                enabled = data.on;
             }
             resolve();
         });
@@ -103,15 +106,22 @@ function asyncDataFromStorage() {
 }
 
 asyncDataFromStorage().then(() => {
+    console.log('asyncDataFromStorage resolved, enabled: ', enabled);
     document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, li').forEach(element => {
         splitElementsIntoSpans(element);
     });
 });
 
-function updateColors() {
-    document.querySelectorAll('.translation-span').forEach((span,i) => {
-        span.style.backgroundColor = i % 2 === 0 ? color1 : color2;
-    });
+function updateColors(turnOff) {
+    if(turnOff) {
+        document.querySelectorAll('.translation-span').forEach((span,i) => {
+            span.style.backgroundColor = i % 2 === 0 ? offColor : offColor;
+        });
+    } else {
+        document.querySelectorAll('.translation-span').forEach((span,i) => {
+            span.style.backgroundColor = i % 2 === 0 ? color1 : color2;
+        });
+    }
 }
 
 // Generic Checks for variables from storage
