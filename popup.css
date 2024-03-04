@@ -108,3 +108,33 @@ select:focus {
     border-color: #2196F3;
     outline: none;
 }
+
+
+/* Styling for the checkboxes */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Creates a grid with 6 equal columns */
+    gap: 10px;
+    /* Space between grid items */
+}
+
+.cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-weight: bold;
+}
+
+.cell input {
+    height: 25px;
+}
+
+.cell span {
+    margin-bottom: 10px;
+    /* Space between the label and the checkbox */
+}
