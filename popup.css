@@ -84,7 +84,16 @@ input:checked+.slider:before {
     border-radius: 50%;
 }
 
-/* Styling for select and input fields */
+/* Styling for colors */
+.colors {
+    display: flex;
+    margin: 10px 0;
+}
+
+.colors > div {
+    flex: 1;
+}
+
 select,
 input[type="color"] {
     width: 100%;
@@ -94,6 +103,7 @@ input[type="color"] {
     border-radius: 4px;
     box-sizing: border-box;
     display: block;
+    height: 40px;
 }
 
 /* Hover effect for inputs for better UX */

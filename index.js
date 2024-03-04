@@ -4,6 +4,14 @@ let targetLanguage;
 let color1 = '#f7f7f7';
 let color2 = '#fff9f0';
 let translatedColor = 'rgba(255,216,184,0.7)';
+let options = {
+    commas: null,
+    questionExcl: null,
+    lis: null,
+    colons: null,
+    andOr: null,
+    dashes: null
+};
 
 function splitElementsIntoSpans(element) {
     // Iterate through all child nodes of the element
@@ -90,23 +98,33 @@ function toggleOnOff(isOn) {
 // Function that waits for storage to return a color1 and color2 value
 function asyncDataFromStorage() {
     return new Promise((resolve,reject) => {
-        chrome.storage.sync.get(['color1','color2', 'on'],function(data) {
-            if(data.color1 !== undefined) {
-                color1 = data.color1;
-            }
-            if(data.color2 !== undefined) {
-                color2 = data.color2;
-            }
-            if(data.on !== undefined) {
-                enabled = data.on;
-            }
+        const directKeys = ['color1','color2','on'];
+        const optionKeys = ['commas','questionExcl','lis','colons','andOr','dashes'];
+
+        chrome.storage.sync.get([...directKeys,...optionKeys],function(data) {
+            console.log('data: ', data)
+            directKeys.forEach(key => {
+                if(data[key] !== undefined) {
+                    window[key] = data[key];
+                }
+            });
+            optionKeys.forEach(key => {
+                console.log('key: ', key, data[key]);
+                if(data[key] !== undefined) {
+                    console.log('not undefined: ', key, data[key])
+                    options[key] = data[key];
+                }
+            });
             resolve();
         });
     });
 }
 
+
 asyncDataFromStorage().then(() => {
-    console.log('asyncDataFromStorage resolved, enabled: ', enabled);
+    console.log('asyncDataFromStorage resolved, extention enabled: ', enabled);
+    console.log('options: ', options);
+    // TODO: add or remove elements from here based on options
     document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, li').forEach(element => {
         splitElementsIntoSpans(element);
     });
@@ -138,13 +156,19 @@ chrome.storage.onChanged.addListener(function(changes,namespace) {
             updateLanguage(newValue);
         } else if (key === 'color1') {
             color1 = newValue;
+            // TODO: only if enabled
             updateColors();
         } else  if (key === 'color2') {
             color2 = newValue;
+            // TODO: only if enabled
             updateColors();
         } else if (key === 'on') {
             enabled = newValue;
             toggleOnOff(newValue);
-        } else { console.log('No key found') }
+        } else if (key === 'commas') { //TODO: or any other checkbox option
+            // options[key] = newValue;
+            // update regex
+            //  re-evalute text nodes and apply new regex
+        }
     }
 });
