@@ -18,10 +18,10 @@ label {
     margin: 10px 0 5px;
 }
 
-/* Improved appearance for new-span */
 .new-span {
     font-weight: bold;
     color: #0056b3;
+
 }
 
 /* Styling for the toggle switch */
@@ -40,7 +40,7 @@ label {
     height: 0;
 }
 
-/* Customizing the slider */
+/* Customizing the toggle/slider */
 .slider {
     position: absolute;
     cursor: pointer;
