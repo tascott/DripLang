@@ -102,16 +102,11 @@ function asyncDataFromStorage() {
         const optionKeys = ['commas','questionExcl','lis','colons','andOr','dashes'];
 
         chrome.storage.sync.get([...directKeys,...optionKeys],function(data) {
-            console.log('data: ', data)
-            directKeys.forEach(key => {
-                if(data[key] !== undefined) {
-                    window[key] = data[key];
-                }
-            });
+            color1 = data.color1 || '#f7f7f7';
+            color2 = data.color2 || '#fff9f0';
+            enabled = data.on;
             optionKeys.forEach(key => {
-                console.log('key: ', key, data[key]);
                 if(data[key] !== undefined) {
-                    console.log('not undefined: ', key, data[key])
                     options[key] = data[key];
                 }
             });
@@ -122,8 +117,6 @@ function asyncDataFromStorage() {
 
 
 asyncDataFromStorage().then(() => {
-    console.log('asyncDataFromStorage resolved, extention enabled: ', enabled);
-    console.log('options: ', options);
     // TODO: add or remove elements from here based on options
     document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, li').forEach(element => {
         splitElementsIntoSpans(element);
