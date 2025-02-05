@@ -1,0 +1,30 @@
+{
+	"name": "DripLang",
+	"version": "1.0.0",
+	"description": "Dripfeed your language learning",
+	"manifest_version": 3,
+	"author": "Thomas Scott",
+	"action": {
+		"default_popup": "popup.html",
+		"default_icon": {
+			"16": "images/drop16.png",
+			"48": "images/drop48.png",
+			"128": "images/drop48.png"
+		}
+	},
+	"content_scripts": [
+		{
+			"css": ["style.css"],
+			"js": ["jQuery.js", "index.js"],
+			"matches": ["https://*/*"]
+		}
+	],
+	"icons": {
+		"16": "images/drop16.png",
+		"48": "images/drop48.png",
+		"128": "images/drop48.png"
+	},
+	"permissions": [
+		"storage"
+	]
+}

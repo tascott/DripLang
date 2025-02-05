@@ -1,17 +1,9 @@
-# DripLang
+This extension will focus on nouns and adjectives only as they can be isolated and translated directly.
 
-Upcoming Features
-- (DONE) Split sentences on joining words (and, or, but, etc.)
-- (DONE) Split sentences on question marks and exclamation marks
-- add a class to the translated text span to stop it being able to be clicked and translated again
-- show some stylised link between the original and the translated text
-- rgba 0.03 color showing up as full black in the color picker. need something to handle opacity
-- Add some settings for how to display the translated text
-- Stop extension turning back on when changing a setting IF the main toggle is off
-- Toggle is OFF, but new pages are still being changed, triggering off/on again fixes - toggle in general not behaving right.
-- Make sure dashes and commas are handled correctly, i.e. they also need a whitespace after them
-- Colors are defaulting wrong, and correcting on change
+I want to scan the page and identify the nouns and adjectives client side using a library compromise js.
 
+Then, wrap them in a span with a class so I can differentiate them visually later on.
 
-## Macro TO-DO
-- Reorgnize project structure
+Hover over it to translate it in place using a tooltip and a translation API (un-hover and english will remain). Click it to make the translation permanent. The fact you've done this is saved somewhere. Use some spaced repetition algorithm and eventually the 'learned' words will be replaced automatically on a page (hover to translate back to english).
+
+Pages will eventually be a mix of spanish and english.

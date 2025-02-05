@@ -1,0 +1,72 @@
+.driplang-word {
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    padding: 0 2px;
+}
+
+.driplang-word.noun {
+    border-bottom-color: #2196F3;
+}
+
+.driplang-word.adjective {
+    border-bottom-color: #9C27B0;
+}
+
+.driplang-word.noun:hover {
+    background-color: rgba(33, 150, 243, 0.1);
+}
+
+.driplang-word.adjective:hover {
+    background-color: rgba(156, 39, 176, 0.1);
+}
+
+.driplang-word.noun.translated {
+    background-color: rgba(76, 175, 80, 0.1);
+    border-bottom-color: #4CAF50;
+}
+
+.driplang-word.adjective.translated {
+    background-color: rgba(255, 152, 0, 0.1);
+    border-bottom-color: #FF9800;
+}
+
+.driplang-word.auto-translated {
+    border-style: dashed;
+    opacity: 0.9;
+}
+
+.driplang-word.auto-translated:hover {
+    opacity: 1;
+}
+
+.driplang-tooltip {
+    position: absolute;
+    background: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 10000;
+    pointer-events: none;
+    animation: fadeIn 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    white-space: nowrap;
+}
+
+.driplang-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    margin-left: -4px;
+    width: 8px;
+    height: 8px;
+    background: #2196F3;
+    transform: rotate(45deg);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
